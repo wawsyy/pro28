@@ -1,0 +1,10 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="120" rx="20" fill="#667eea"/>
+  <path d="M30 40L60 20L90 40V80L60 100L30 80V40Z" fill="white" opacity="0.9"/>
+  <circle cx="45" cy="50" r="5" fill="#764ba2"/>
+  <circle cx="60" cy="50" r="5" fill="#764ba2"/>
+  <circle cx="75" cy="50" r="5" fill="#764ba2"/>
+  <path d="M40 70L50 65L60 70L70 65L80 70" stroke="#764ba2" stroke-width="3" stroke-linecap="round"/>
+  <text x="60" y="95" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#764ba2" text-anchor="middle">FHE</text>
+</svg>
+
