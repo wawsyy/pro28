@@ -18,6 +18,9 @@ contract DriverPerformance is SepoliaConfig {
 
     // Mapping to track registered drivers
     mapping(address => bool) private registeredDrivers;
+
+    // Array to keep track of all registered driver addresses
+    address[] private registeredDriverList;
     
     // Target threshold for performance evaluation (public, unencrypted)
     uint32 public targetThreshold;
@@ -50,6 +53,7 @@ contract DriverPerformance is SepoliaConfig {
         require(!registeredDrivers[driver], "Driver already registered");
 
         registeredDrivers[driver] = true;
+        registeredDriverList.push(driver);
         emit DriverRegistered(driver);
     }
 
@@ -64,6 +68,7 @@ contract DriverPerformance is SepoliaConfig {
             require(driver != address(0), "Invalid driver address");
             if (!registeredDrivers[driver]) {
                 registeredDrivers[driver] = true;
+                registeredDriverList.push(driver);
                 emit DriverRegistered(driver);
             }
         }
@@ -114,6 +119,32 @@ contract DriverPerformance is SepoliaConfig {
     /// @return True if the driver is registered
     function isDriverRegistered(address driver) external view returns (bool) {
         return registeredDrivers[driver];
+    }
+
+    /// @notice Get the total count of registered drivers
+    /// @return The number of registered drivers
+    function getRegisteredDriverCount() external view returns (uint256) {
+        return registeredDriverList.length;
+    }
+
+    /// @notice Get a paginated list of registered driver addresses
+    /// @param offset Starting index for pagination
+    /// @param limit Maximum number of addresses to return
+    /// @return Array of registered driver addresses
+    function getRegisteredDrivers(uint256 offset, uint256 limit) external view returns (address[] memory) {
+        require(offset < registeredDriverList.length, "Offset out of bounds");
+
+        uint256 actualLimit = limit;
+        if (offset + limit > registeredDriverList.length) {
+            actualLimit = registeredDriverList.length - offset;
+        }
+
+        address[] memory drivers = new address[](actualLimit);
+        for (uint256 i = 0; i < actualLimit; i++) {
+            drivers[i] = registeredDriverList[offset + i];
+        }
+
+        return drivers;
     }
     
     /// @notice Evaluate driver performance: isGood = completedOrders > target
