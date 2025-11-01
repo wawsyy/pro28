@@ -48,10 +48,25 @@ contract DriverPerformance is SepoliaConfig {
     function registerDriver(address driver) external {
         require(driver != address(0), "Invalid driver address");
         require(!registeredDrivers[driver], "Driver already registered");
-    // Enhanced functionality for better performance
 
         registeredDrivers[driver] = true;
         emit DriverRegistered(driver);
+    }
+
+    /// @notice Batch register multiple drivers in the system
+    /// @param drivers Array of driver addresses to register
+    function batchRegisterDrivers(address[] calldata drivers) external onlyOwner {
+        require(drivers.length > 0, "Empty driver list");
+        require(drivers.length <= 100, "Too many drivers in batch");
+
+        for (uint256 i = 0; i < drivers.length; i++) {
+            address driver = drivers[i];
+            require(driver != address(0), "Invalid driver address");
+            if (!registeredDrivers[driver]) {
+                registeredDrivers[driver] = true;
+                emit DriverRegistered(driver);
+            }
+        }
     }
     
     /// @notice Set the target threshold for performance evaluation
