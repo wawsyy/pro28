@@ -7,8 +7,15 @@ import {SepoliaConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
 /// @title Driver Performance Evaluation System using FHE
 /// @notice A system where drivers can submit encrypted order completion counts,
 /// and the system can evaluate performance without exposing sensitive data
-// Change 1764244452317
-// Change 1764244453630
+
+// Custom errors for better gas efficiency and clarity
+error InvalidAddress();
+error DriverAlreadyRegistered();
+error EmptyDriverList();
+error BatchSizeTooLarge();
+error OffsetOutOfBounds();
+error UnauthorizedAccess();
+
 contract DriverPerformance is SepoliaConfig {
     // Mapping from driver address to their encrypted completed order count
     mapping(address => euint32) private driverOrderCounts;
@@ -37,7 +44,7 @@ contract DriverPerformance is SepoliaConfig {
     // Modifiers
     // Enhanced functionality for better performance
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can call this function");
+        if (msg.sender != owner) revert UnauthorizedAccess();
         _;
     }
     
@@ -49,8 +56,8 @@ contract DriverPerformance is SepoliaConfig {
     /// @notice Register a driver in the system
     /// @param driver Address of the driver to register
     function registerDriver(address driver) external {
-        require(driver != address(0), "Invalid driver address");
-        require(!registeredDrivers[driver], "Driver already registered");
+        if (driver == address(0)) revert InvalidAddress();
+        if (registeredDrivers[driver]) revert DriverAlreadyRegistered();
 
         registeredDrivers[driver] = true;
         registeredDriverList.push(driver);
@@ -60,8 +67,8 @@ contract DriverPerformance is SepoliaConfig {
     /// @notice Batch register multiple drivers in the system
     /// @param drivers Array of driver addresses to register
     function batchRegisterDrivers(address[] calldata drivers) external onlyOwner {
-        require(drivers.length > 0, "Empty driver list");
-        require(drivers.length <= 100, "Too many drivers in batch");
+        if (drivers.length == 0) revert EmptyDriverList();
+        if (drivers.length > 100) revert BatchSizeTooLarge();
 
         for (uint256 i = 0; i < drivers.length; i++) {
             address driver = drivers[i];
@@ -91,7 +98,7 @@ contract DriverPerformance is SepoliaConfig {
         externalEuint32 encryptedOrderCount,
         bytes calldata inputProof
     ) external {
-        require(driver != address(0), "Invalid driver address");
+        if (driver == address(0)) revert InvalidAddress();
         
         // Convert external encrypted input to internal encrypted type
         euint32 orderCount = FHE.fromExternal(encryptedOrderCount, inputProof);
@@ -132,7 +139,7 @@ contract DriverPerformance is SepoliaConfig {
     /// @param limit Maximum number of addresses to return
     /// @return Array of registered driver addresses
     function getRegisteredDrivers(uint256 offset, uint256 limit) external view returns (address[] memory) {
-        require(offset < registeredDriverList.length, "Offset out of bounds");
+        if (offset >= registeredDriverList.length) revert OffsetOutOfBounds();
 
         uint256 actualLimit = limit;
         if (offset + limit > registeredDriverList.length) {
@@ -151,7 +158,7 @@ contract DriverPerformance is SepoliaConfig {
     /// @param driver Address of the driver
     /// @return Encrypted boolean indicating if performance is good (meets threshold)
     function evaluatePerformance(address driver) external returns (ebool) {
-        require(driver != address(0), "Invalid driver address");
+        if (driver == address(0)) revert InvalidAddress();
 
         euint32 orderCount = driverOrderCounts[driver];
         euint32 encryptedThreshold = FHE.asEuint32(targetThreshold);
