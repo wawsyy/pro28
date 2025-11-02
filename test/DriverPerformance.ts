@@ -18,6 +18,7 @@ async function deployFixture() {
   return { driverPerformanceContract, driverPerformanceContractAddress };
 }
 
+// Enhanced test suite
 describe("DriverPerformance", function () {
   let signers: Signers;
   let driverPerformanceContract: DriverPerformance;
