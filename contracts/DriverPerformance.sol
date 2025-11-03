@@ -15,6 +15,8 @@ error EmptyDriverList();
 error BatchSizeTooLarge();
 error OffsetOutOfBounds();
 error UnauthorizedAccess();
+error ContractPaused();
+error ContractNotPaused();
 
 contract DriverPerformance is SepoliaConfig {
     // Mapping from driver address to their encrypted completed order count
@@ -34,17 +36,31 @@ contract DriverPerformance is SepoliaConfig {
     
     // Contract owner (can set target threshold)
     address public owner;
+
+    // Emergency pause functionality
+    bool public paused;
     
     // Events
     event OrderCountSubmitted(address indexed driver, address indexed submitter);
     event PerformanceEvaluated(address indexed driver);
     event TargetThresholdUpdated(uint32 oldThreshold, uint32 newThreshold);
     event DriverRegistered(address indexed driver);
+    event ContractPaused(address indexed account);
+    event ContractUnpaused(address indexed account);
     
     // Modifiers
-    // Enhanced functionality for better performance
     modifier onlyOwner() {
         if (msg.sender != owner) revert UnauthorizedAccess();
+        _;
+    }
+
+    modifier whenNotPaused() {
+        if (paused) revert ContractPaused();
+        _;
+    }
+
+    modifier whenPaused() {
+        if (!paused) revert ContractNotPaused();
         _;
     }
     
@@ -88,6 +104,20 @@ contract DriverPerformance is SepoliaConfig {
         targetThreshold = _newThreshold;
         emit TargetThresholdUpdated(oldThreshold, _newThreshold);
     }
+
+    /// @notice Emergency pause the contract
+    /// @dev Only owner can pause, prevents critical operations during emergencies
+    function pause() external onlyOwner whenNotPaused {
+        paused = true;
+        emit ContractPaused(msg.sender);
+    }
+
+    /// @notice Resume contract operations
+    /// @dev Only owner can unpause, restores normal functionality
+    function unpause() external onlyOwner whenPaused {
+        paused = false;
+        emit ContractUnpaused(msg.sender);
+    }
     
     /// @notice Submit encrypted order completion count for a driver
     /// @param driver Address of the driver
@@ -97,7 +127,7 @@ contract DriverPerformance is SepoliaConfig {
         address driver,
         externalEuint32 encryptedOrderCount,
         bytes calldata inputProof
-    ) external {
+    ) external whenNotPaused {
         if (driver == address(0)) revert InvalidAddress();
         
         // Convert external encrypted input to internal encrypted type
@@ -157,7 +187,7 @@ contract DriverPerformance is SepoliaConfig {
     /// @notice Evaluate driver performance: isGood = completedOrders > target
     /// @param driver Address of the driver
     /// @return Encrypted boolean indicating if performance is good (meets threshold)
-    function evaluatePerformance(address driver) external returns (ebool) {
+    function evaluatePerformance(address driver) external whenNotPaused returns (ebool) {
         if (driver == address(0)) revert InvalidAddress();
 
         euint32 orderCount = driverOrderCounts[driver];
