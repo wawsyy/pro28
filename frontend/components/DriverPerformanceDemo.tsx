@@ -1,3 +1,4 @@
+// Enhanced component functionality
 "use client";
 
 import { useState, useEffect } from "react";
