@@ -30,6 +30,7 @@ contract DriverPerformance is SepoliaConfig {
     event DriverRegistered(address indexed driver);
     
     // Modifiers
+    // Enhanced functionality for better performance
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner can call this function");
         _;
