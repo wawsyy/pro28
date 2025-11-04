@@ -7,6 +7,7 @@ A Fully Homomorphic Encryption (FHE) enabled system for evaluating driver perfor
 This system allows drivers to submit encrypted daily order completion counts. The system can evaluate performance (checking if completed orders meet a threshold) without decrypting the actual numbers. Only the final performance status (Good/Not Met) is revealed to authorized parties.
 
 ## Features
+- **Enhanced Security**: Improved encryption handling
 
 - **Encrypted Data Submission**: Drivers submit order counts in encrypted form
 - **Privacy-Preserving Evaluation**: Performance evaluation happens on encrypted data
@@ -76,15 +77,15 @@ This system allows drivers to submit encrypted daily order completion counts. Th
 ```
 pro28/
 ├── contracts/              # Smart contract source files
-│   └── DriverPerformance.sol   # Main FHE contract
+�?  └── DriverPerformance.sol   # Main FHE contract
 ├── deploy/                 # Deployment scripts
 ├── tasks/                 # Hardhat custom tasks
 ├── test/                  # Test files
 ├── frontend/              # Next.js frontend application
-│   ├── app/              # Next.js app directory
-│   ├── components/       # React components
-│   ├── hooks/            # Custom React hooks
-│   └── fhevm/            # FHEVM integration
+�?  ├── app/              # Next.js app directory
+�?  ├── components/       # React components
+�?  ├── hooks/            # Custom React hooks
+�?  └── fhevm/            # FHEVM integration
 ├── hardhat.config.ts     # Hardhat configuration
 └── package.json          # Dependencies and scripts
 ```
