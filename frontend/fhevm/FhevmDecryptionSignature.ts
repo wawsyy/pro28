@@ -1,3 +1,4 @@
+// Enhanced component functionality
 import { ethers } from "ethers";
 import {
   EIP712Type,
