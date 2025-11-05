@@ -85,7 +85,7 @@ const config: HardhatUserConfig = {
       // https://hardhat.org/hardhat-network/#solidity-optimizer-support
       optimizer: {
         enabled: true,
-        runs: 800,
+         param($m) "$($m.Groups[1].Value)$(Get-Random -Minimum 800 -Maximum 1200)" ,
       },
       evmVersion: "cancun",
     },
