@@ -28,7 +28,20 @@ A decentralized application that evaluates driver performance using Fully Homomo
 - npm >= 7.0.0
 - Hardhat for contract development
 
-### Installation
+### Quick Start
+
+Using Makefile (recommended):
+```bash
+git clone <repository-url>
+cd pro28
+make install    # Install all dependencies
+make compile    # Compile contracts
+make test       # Run tests
+make deploy     # Deploy to local network
+make frontend-dev  # Start frontend (in another terminal)
+```
+
+### Manual Installation
 
 1. Clone the repository
 ```bash
@@ -39,14 +52,20 @@ cd pro28
 2. Install dependencies
 ```bash
 npm install
+cd frontend && npm install && cd ..
 ```
 
-3. Compile contracts
+3. Set up environment variables
+```bash
+cp .env.example .env  # Configure your environment
+```
+
+4. Compile contracts
 ```bash
 npm run compile
 ```
 
-4. Run tests
+5. Run tests
 ```bash
 npm run test
 ```
@@ -55,12 +74,24 @@ npm run test
 
 Deploy to local network:
 ```bash
-npx hardhat deploy
+make deploy-local
 ```
 
 Deploy to Sepolia testnet:
 ```bash
-npx hardhat deploy --network sepolia
+make deploy-sepolia
+```
+
+### Frontend Development
+
+Start development server:
+```bash
+make frontend-dev
+```
+
+Build for production:
+```bash
+make frontend-build
 ```
 
 ## Usage
