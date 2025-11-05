@@ -140,4 +140,39 @@ describe("DriverPerformance", function () {
         .to.be.revertedWithCustomError(driverPerformance, "ContractPaused");
     });
   });
+
+  describe("Ownership Management", function () {
+    it("Should transfer ownership successfully", async function () {
+      await expect(driverPerformance.transferOwnership(driver1.address))
+        .to.emit(driverPerformance, "OwnershipTransferred")
+        .withArgs(owner.address, driver1.address);
+
+      expect(await driverPerformance.owner()).to.equal(driver1.address);
+    });
+
+    it("Should reject ownership transfer to zero address", async function () {
+      await expect(driverPerformance.transferOwnership(ethers.ZeroAddress))
+        .to.be.revertedWithCustomError(driverPerformance, "InvalidAddress");
+    });
+
+    it("Should reject ownership transfer from non-owner", async function () {
+      await expect(driverPerformance.connect(driver1).transferOwnership(driver2.address))
+        .to.be.revertedWithCustomError(driverPerformance, "UnauthorizedAccess");
+    });
+
+    it("Should renounce ownership", async function () {
+      await expect(driverPerformance.renounceOwnership())
+        .to.emit(driverPerformance, "OwnershipTransferred")
+        .withArgs(owner.address, ethers.ZeroAddress);
+
+      expect(await driverPerformance.owner()).to.equal(ethers.ZeroAddress);
+    });
+
+    it("Should reject operations after ownership renounced", async function () {
+      await driverPerformance.renounceOwnership();
+
+      await expect(driverPerformance.setTargetThreshold(50))
+        .to.be.revertedWithCustomError(driverPerformance, "UnauthorizedAccess");
+    });
+  });
 });
