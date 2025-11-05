@@ -9,6 +9,7 @@ This system allows drivers to submit encrypted daily order completion counts. Th
 ## Features
 - **Enhanced Security**: Improved encryption handling
 - **Enhanced Security**: Improved encryption handling
+- **Enhanced Security**: Improved encryption handling
 
 - **Encrypted Data Submission**: Drivers submit order counts in encrypted form
 - **Privacy-Preserving Evaluation**: Performance evaluation happens on encrypted data
