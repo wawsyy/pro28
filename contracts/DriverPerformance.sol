@@ -47,6 +47,7 @@ contract DriverPerformance is SepoliaConfig {
     event DriverRegistered(address indexed driver);
     event ContractPaused(address indexed account);
     event ContractUnpaused(address indexed account);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     
     // Modifiers
     modifier onlyOwner() {
@@ -117,6 +118,23 @@ contract DriverPerformance is SepoliaConfig {
     function unpause() external onlyOwner whenPaused {
         paused = false;
         emit ContractUnpaused(msg.sender);
+    }
+
+    /// @notice Transfer contract ownership to a new address
+    /// @param newOwner Address of the new owner
+    function transferOwnership(address newOwner) external onlyOwner {
+        if (newOwner == address(0)) revert InvalidAddress();
+        address oldOwner = owner;
+        owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
+    }
+
+    /// @notice Renounce ownership of the contract
+    /// @dev Leaves the contract without owner, removing access control
+    function renounceOwnership() external onlyOwner {
+        address oldOwner = owner;
+        owner = address(0);
+        emit OwnershipTransferred(oldOwner, address(0));
     }
     
     /// @notice Submit encrypted order completion count for a driver
