@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
-import { parseEther } from 'viem';
 
 interface DriverRegistrationProps {
   contractAddress: `0x${string}`;
@@ -21,7 +20,7 @@ export default function DriverRegistration({ contractAddress }: DriverRegistrati
       setIsLoading(true);
       // Note: This is a simplified version. In a real FHE implementation,
       // you would need to handle encrypted inputs and proofs
-      writeContract({
+      await writeContract({
         address: contractAddress,
         abi: [
           {
