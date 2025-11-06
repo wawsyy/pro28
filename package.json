@@ -74,8 +74,14 @@
     "prettier:write": "prettier --write \"**/*.{js,json,md,sol,ts,yml}\"",
     "test": "hardhat test",
     "test:sepolia": "hardhat test --network sepolia",
+    "test:gas": "REPORT_GAS=true npm run test",
     "build:ts": "tsc --project tsconfig.json",
-    "typechain": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat typechain"
+    "typechain": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat typechain",
+    "deploy": "hardhat deploy",
+    "deploy:sepolia": "hardhat deploy --network sepolia",
+    "verify": "hardhat verify",
+    "size": "hardhat size-contracts",
+    "make": "make"
   },
   "overrides": {
     "ws@>=7.0.0 <7.5.10": ">=7.5.10",
