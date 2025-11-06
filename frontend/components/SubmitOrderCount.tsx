@@ -20,20 +20,34 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
 
     try {
       setIsLoading(true);
-      // Note: In a real FHE implementation, this would encrypt the order count
-      // For now, this is a placeholder that shows the UI flow
-      // The actual encryption would happen using FHEVM before calling the contract
       
-      // This is a simplified version - in production you'd need to:
-      // 1. Encrypt the order count using FHEVM
-      // 2. Generate input proof
-      // 3. Call submitOrderCount with encrypted data
+      // Note: FHE encryption requires FHEVM integration
+      // This is a placeholder implementation
+      // In production, you would need to:
+      // 1. Initialize FHEVM instance
+      // 2. Encrypt the order count using FHEVM.encrypt()
+      // 3. Generate input proof
+      // 4. Call submitOrderCount with encrypted data and proof
       
-      console.log('Submitting encrypted order count:', orderCount);
-      // Placeholder for actual encrypted submission
+      // For now, we'll show a message that FHE integration is needed
+      alert(`FHE Encryption Required\n\nTo submit encrypted order count (${orderCount}), you need to:\n1. Integrate FHEVM library\n2. Encrypt the value before submission\n3. Generate input proof\n\nCurrent value: ${orderCount}`);
+      
+      console.log('Order count to encrypt and submit:', orderCount);
+      
+      // TODO: Implement FHE encryption
+      // const fhevm = await initFHEVM();
+      // const encrypted = await fhevm.encrypt(orderCount);
+      // const proof = await generateProof(encrypted);
+      // await writeContract({
+      //   address: contractAddress,
+      //   abi: DriverPerformanceABI,
+      //   functionName: 'submitOrderCount',
+      //   args: [userAddress, encrypted, proof],
+      // });
       
     } catch (err) {
       console.error('Submission failed:', err);
+      alert('Submission failed. Please check console for details.');
     } finally {
       setIsLoading(false);
     }
