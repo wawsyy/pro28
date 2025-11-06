@@ -15,6 +15,18 @@ const nextConfig: NextConfig = {
       crypto: false,
     };
 
+    // Ignore React Native modules that are not needed in web environment
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@react-native-async-storage/async-storage': false,
+    };
+
+    // Ignore optional dependencies
+    config.externals = config.externals || [];
+    config.externals.push({
+      'pino-pretty': 'commonjs pino-pretty',
+    });
+
     return config;
   },
   async headers() {

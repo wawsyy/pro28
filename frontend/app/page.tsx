@@ -1,39 +1,15 @@
 'use client';
 
-import { useAccount } from 'wagmi';
 import SystemInfo from '../components/SystemInfo';
 import SubmitOrderCount from '../components/SubmitOrderCount';
 import ActionButtons from '../components/ActionButtons';
 import { Providers } from './providers';
+import HomeContent from './HomeContent';
 
 export default function Home() {
-  const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}` || '0x0000000000000000000000000000000000000000';
-  const { address } = useAccount();
-
   return (
     <Providers>
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Driver Performance Evaluation System
-            </h1>
-            <p className="text-lg text-gray-600">
-              Privacy-preserving driver performance evaluation using Fully Homomorphic Encryption
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            <SystemInfo contractAddress={contractAddress} userAddress={address} />
-            <SubmitOrderCount contractAddress={contractAddress} userAddress={address} />
-            <ActionButtons contractAddress={contractAddress} userAddress={address} />
-          </div>
-
-          <div className="mt-8 text-center text-sm text-gray-500">
-            <p>Built with Next.js, FHEVM, and Web3 technologies</p>
-          </div>
-        </div>
-      </main>
+      <HomeContent />
     </Providers>
   );
 }
