@@ -1,3 +1,4 @@
+// Enhanced component functionality
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
