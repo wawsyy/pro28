@@ -1,0 +1,98 @@
+'use client';
+
+import { useState } from 'react';
+import { useAccount, useWriteContract, useReadContract } from 'wagmi';
+
+interface ActionButtonsProps {
+  contractAddress: `0x${string}`;
+  userAddress?: string;
+}
+
+export default function ActionButtons({ contractAddress, userAddress }: ActionButtonsProps) {
+  const { isConnected } = useAccount();
+  const { writeContract, isPending: isEvaluating } = useWriteContract();
+  const [isDecrypting, setIsDecrypting] = useState(false);
+  const [decryptedResult, setDecryptedResult] = useState<string | null>(null);
+
+  const handleEvaluatePerformance = async () => {
+    if (!isConnected || !userAddress) return;
+
+    try {
+      await writeContract({
+        address: contractAddress,
+        abi: [
+          {
+            name: 'evaluatePerformance',
+            type: 'function',
+            inputs: [{ name: 'driver', type: 'address' }],
+            outputs: [{ name: '', type: 'ebool' }],
+            stateMutability: 'nonpayable',
+          },
+        ],
+        functionName: 'evaluatePerformance',
+        args: [userAddress as `0x${string}`],
+      });
+    } catch (err) {
+      console.error('Evaluation failed:', err);
+    }
+  };
+
+  const handleDecryptResult = async () => {
+    if (!isConnected || !userAddress) return;
+
+    try {
+      setIsDecrypting(true);
+      // In a real FHE implementation, this would:
+      // 1. Get the encrypted result from the contract
+      // 2. Use FHEVM to decrypt it
+      // 3. Display the decrypted result
+      
+      // Placeholder for actual decryption
+      const result = await new Promise<string>((resolve) => {
+        setTimeout(() => {
+          resolve('Performance meets threshold');
+        }, 1000);
+      });
+      
+      setDecryptedResult(result);
+    } catch (err) {
+      console.error('Decryption failed:', err);
+      setDecryptedResult('Decryption failed');
+    } finally {
+      setIsDecrypting(false);
+    }
+  };
+
+  if (!isConnected) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <button
+          onClick={handleEvaluatePerformance}
+          disabled={isEvaluating}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium text-lg shadow-lg"
+        >
+          {isEvaluating ? 'Evaluating...' : 'Evaluate Performance'}
+        </button>
+
+        <button
+          onClick={handleDecryptResult}
+          disabled={isDecrypting}
+          className="bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium text-lg shadow-lg"
+        >
+          {isDecrypting ? 'Decrypting...' : 'Decrypt Result'}
+        </button>
+      </div>
+
+      {decryptedResult && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <p className="text-green-800 font-medium">Decrypted Result:</p>
+          <p className="text-green-700 mt-1">{decryptedResult}</p>
+        </div>
+      )}
+    </div>
+  );
+}

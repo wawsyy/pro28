@@ -1,10 +1,14 @@
 'use client';
 
-import DriverRegistration from '../components/DriverRegistration';
+import { useAccount } from 'wagmi';
+import SystemInfo from '../components/SystemInfo';
+import SubmitOrderCount from '../components/SubmitOrderCount';
+import ActionButtons from '../components/ActionButtons';
 import { Providers } from './providers';
 
 export default function Home() {
   const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}` || '0x0000000000000000000000000000000000000000';
+  const { address } = useAccount();
 
   return (
     <Providers>
@@ -20,7 +24,9 @@ export default function Home() {
           </div>
 
           <div className="space-y-6">
-            <DriverRegistration contractAddress={contractAddress} />
+            <SystemInfo contractAddress={contractAddress} userAddress={address} />
+            <SubmitOrderCount contractAddress={contractAddress} userAddress={address} />
+            <ActionButtons contractAddress={contractAddress} userAddress={address} />
           </div>
 
           <div className="mt-8 text-center text-sm text-gray-500">
