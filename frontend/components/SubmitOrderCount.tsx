@@ -15,11 +15,14 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
   const [orderCount, setOrderCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+
   const handleSubmitOrderCount = async () => {
     if (!isConnected || !userAddress || orderCount <= 0) return;
 
     try {
       setIsLoading(true);
+      setSubmitMessage(null);
       
       // Note: FHE encryption requires FHEVM integration
       // This is a placeholder implementation
@@ -29,10 +32,12 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
       // 3. Generate input proof
       // 4. Call submitOrderCount with encrypted data and proof
       
-      // For now, we'll show a message that FHE integration is needed
-      alert(`FHE Encryption Required\n\nTo submit encrypted order count (${orderCount}), you need to:\n1. Integrate FHEVM library\n2. Encrypt the value before submission\n3. Generate input proof\n\nCurrent value: ${orderCount}`);
-      
       console.log('Order count to encrypt and submit:', orderCount);
+      
+      // Simulate processing
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSubmitMessage(`Order count ${orderCount} prepared for encryption. FHEVM integration required for actual submission.`);
       
       // TODO: Implement FHE encryption
       // const fhevm = await initFHEVM();
@@ -47,7 +52,7 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
       
     } catch (err) {
       console.error('Submission failed:', err);
-      alert('Submission failed. Please check console for details.');
+      setSubmitMessage('Submission failed. FHEVM integration required.');
     } finally {
       setIsLoading(false);
     }
@@ -91,6 +96,14 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
             {isPending || isLoading ? 'Submitting...' : 'Submit (Encrypted)'}
           </button>
         </div>
+
+        {submitMessage && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-blue-800 text-sm">
+              {submitMessage}
+            </p>
+          </div>
+        )}
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-3">
