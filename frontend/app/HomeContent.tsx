@@ -14,10 +14,10 @@ export default function HomeContent() {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Driver Performance Evaluation System
+            Driver Performance
           </h1>
           <p className="text-lg text-gray-600">
-            Privacy-preserving driver performance evaluation using Fully Homomorphic Encryption
+            Logistics encryption system with Fully Homomorphic Encryption
           </p>
         </div>
 

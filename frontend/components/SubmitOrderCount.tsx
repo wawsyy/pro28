@@ -50,7 +50,7 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
   return (
     <div className="bg-white shadow-lg rounded-lg p-6">
       <div className="flex items-center gap-2 mb-4">
-        <FileText className="w-5 h-5 text-blue-600" />
+        <FileText className="w-5 h-5 text-orange-500" />
         <h2 className="text-2xl font-bold text-gray-800">Submit Order Count</h2>
       </div>
 
@@ -74,13 +74,23 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
           />
         </div>
 
-        <button
-          onClick={handleSubmitOrderCount}
-          disabled={isPending || isLoading || orderCount <= 0}
-          className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
-        >
-          {isPending || isLoading ? 'Submitting...' : 'Submit (Encrypted)'}
-        </button>
+        <div className="flex gap-2">
+          <input
+            type="number"
+            min="0"
+            value={orderCount}
+            onChange={(e) => setOrderCount(parseInt(e.target.value) || 0)}
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter order count"
+          />
+          <button
+            onClick={handleSubmitOrderCount}
+            disabled={isPending || isLoading || orderCount <= 0}
+            className="bg-gradient-to-r from-purple-600 to-purple-700 text-white py-2 px-6 rounded-md hover:from-purple-700 hover:to-purple-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+          >
+            {isPending || isLoading ? 'Submitting...' : 'Submit (Encrypted)'}
+          </button>
+        </div>
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-3">

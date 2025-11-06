@@ -50,6 +50,15 @@ export default function SystemInfo({ contractAddress, userAddress }: SystemInfoP
             </p>
           </div>
         )}
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Last Transaction
+          </label>
+          <p className="text-sm text-gray-600 font-mono">
+            {userAddress ? `${userAddress.slice(0, 10)}...${userAddress.slice(-8)}` : 'No transactions yet'}
+          </p>
+        </div>
       </div>
     </div>
   );

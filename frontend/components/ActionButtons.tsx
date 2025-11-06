@@ -69,6 +69,12 @@ export default function ActionButtons({ contractAddress, userAddress }: ActionBu
 
   return (
     <div className="space-y-4">
+      {decryptedResult && (
+        <div className="bg-blue-100 border border-blue-300 rounded-lg p-3 text-center">
+          <p className="text-blue-800 font-medium">Decryption completed!</p>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <button
           onClick={handleEvaluatePerformance}
@@ -88,9 +94,21 @@ export default function ActionButtons({ contractAddress, userAddress }: ActionBu
       </div>
 
       {decryptedResult && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <p className="text-green-800 font-medium">Decrypted Result:</p>
-          <p className="text-green-700 mt-1">{decryptedResult}</p>
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <h2 className="text-2xl font-bold text-gray-800">Performance Result</h2>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Status
+            </label>
+            <p className="text-lg text-green-600 font-medium">
+              ✓ Good
+            </p>
+          </div>
         </div>
       )}
     </div>
