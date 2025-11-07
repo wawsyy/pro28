@@ -11,11 +11,13 @@
 1. 访问 [Vercel Dashboard](https://vercel.com/dashboard)
 2. 点击 "Add New Project"
 3. 导入 GitHub 仓库：`wawsyy/pro28`
-4. Vercel 会自动检测配置：
-   - **Root Directory**: `frontend`
-   - **Framework**: Next.js
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `.next`
+4. **重要配置**：
+   - **Root Directory**: 在 UI 中设置为 `frontend`（点击 "Edit" 按钮）
+   - **Framework Preset**: 选择 `Next.js`
+   - **Build Command**: `npm run build`（会自动在 frontend 目录执行）
+   - **Output Directory**: `.next`（会自动在 frontend/.next）
+   
+   **注意**：`rootDirectory` 必须在 Vercel Dashboard 的 UI 中设置，不能放在 `vercel.json` 中
 
 ### 2. 通过 Vercel CLI 部署
 
