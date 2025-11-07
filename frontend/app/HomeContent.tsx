@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import SystemInfo from '../components/SystemInfo';
 import SubmitOrderCount from '../components/SubmitOrderCount';
 import ActionButtons from '../components/ActionButtons';
@@ -20,13 +21,18 @@ export default function HomeContent() {
     return (
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Driver Performance
-            </h1>
-            <p className="text-lg text-gray-600">
-              Logistics encryption system with Fully Homomorphic Encryption
-            </p>
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex-1">
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                Driver Performance
+              </h1>
+              <p className="text-lg text-gray-600">
+                Logistics encryption system with Fully Homomorphic Encryption
+              </p>
+            </div>
+            <div className="ml-4">
+              <ConnectButton />
+            </div>
           </div>
           <div className="text-center text-gray-500">
             <p>Loading...</p>
@@ -39,13 +45,19 @@ export default function HomeContent() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Driver Performance
-          </h1>
-          <p className="text-lg text-gray-600">
-            Logistics encryption system with Fully Homomorphic Encryption
-          </p>
+        {/* Header with Connect Button */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex-1">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              Driver Performance
+            </h1>
+            <p className="text-lg text-gray-600">
+              Logistics encryption system with Fully Homomorphic Encryption
+            </p>
+          </div>
+          <div className="ml-4">
+            <ConnectButton />
+          </div>
         </div>
 
         <div className="space-y-6">
