@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAccount, useWriteContract, useReadContract } from 'wagmi';
 
 interface ActionButtonsProps {
@@ -13,6 +13,11 @@ export default function ActionButtons({ contractAddress, userAddress }: ActionBu
   const { writeContract, isPending: isEvaluating } = useWriteContract();
   const [isDecrypting, setIsDecrypting] = useState(false);
   const [decryptedResult, setDecryptedResult] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleEvaluatePerformance = async () => {
     if (!isConnected || !userAddress) return;
@@ -62,6 +67,10 @@ export default function ActionButtons({ contractAddress, userAddress }: ActionBu
       setIsDecrypting(false);
     }
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   if (!isConnected) {
     return null;

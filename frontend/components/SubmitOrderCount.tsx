@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import { FileText } from 'lucide-react';
 
@@ -14,8 +14,12 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
   const { writeContract, isPending, error } = useWriteContract();
   const [orderCount, setOrderCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
-
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmitOrderCount = async () => {
     if (!isConnected || !userAddress || orderCount <= 0) return;
@@ -57,6 +61,20 @@ export default function SubmitOrderCount({ contractAddress, userAddress }: Submi
       setIsLoading(false);
     }
   };
+
+  if (!mounted) {
+    return (
+      <div className="bg-white shadow-lg rounded-lg p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <FileText className="w-5 h-5 text-orange-500" />
+          <h2 className="text-2xl font-bold text-gray-800">Submit Order Count</h2>
+        </div>
+        <div className="text-center text-gray-500 py-4">
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isConnected) {
     return (

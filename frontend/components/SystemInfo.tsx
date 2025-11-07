@@ -2,6 +2,7 @@
 
 import { useReadContract } from 'wagmi';
 import { Info } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface SystemInfoProps {
   contractAddress: `0x${string}`;
@@ -9,6 +10,12 @@ interface SystemInfoProps {
 }
 
 export default function SystemInfo({ contractAddress, userAddress }: SystemInfoProps) {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { data: targetThreshold } = useReadContract({
     address: contractAddress,
     abi: [
@@ -21,6 +28,9 @@ export default function SystemInfo({ contractAddress, userAddress }: SystemInfoP
       },
     ],
     functionName: 'targetThreshold',
+    query: {
+      enabled: mounted && !!contractAddress && contractAddress !== '0x0000000000000000000000000000000000000000',
+    },
   });
 
   return (
