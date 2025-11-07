@@ -13,11 +13,11 @@ types/
 deployments/
 fhevmTemp/
 
-# Root package files (frontend has its own)
-package.json
-package-lock.json
-tsconfig.json
-node_modules/
+# Root package files only (NOT frontend/package.json - that's needed!)
+/package.json
+/package-lock.json
+/tsconfig.json
+/node_modules/
 
 # Documentation (optional, can be included)
 README.md
