@@ -35,40 +35,33 @@ export default function SystemInfo({ contractAddress, userAddress }: SystemInfoP
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Info className="w-5 h-5 text-blue-600" />
+      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-blue-200">
+        <div className="w-6 h-6 rounded bg-blue-600 flex items-center justify-center">
+          <Info className="w-4 h-4 text-white" />
+        </div>
         <h2 className="text-2xl font-bold text-gray-800">System Information</h2>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+      <div className="space-y-0">
+        <div className="flex justify-between items-center py-3 border-b border-gray-100">
+          <label className="text-sm font-medium text-gray-700">
             Target Threshold
           </label>
-          <p className="text-lg text-gray-900">
+          <p className="text-sm text-gray-600 text-right">
             {targetThreshold ? `${targetThreshold.toString()} orders` : 'Loading...'}
           </p>
         </div>
 
         {userAddress && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="flex justify-between items-center py-3">
+            <label className="text-sm font-medium text-gray-700">
               Driver Address
             </label>
-            <p className="text-sm text-gray-600 font-mono break-all">
+            <p className="text-sm text-gray-600 font-mono text-right">
               {userAddress}
             </p>
           </div>
         )}
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Last Transaction
-          </label>
-          <p className="text-sm text-gray-600 font-mono">
-            {userAddress ? `${userAddress.slice(0, 10)}...${userAddress.slice(-8)}` : 'No transactions yet'}
-          </p>
-        </div>
       </div>
     </div>
   );
